@@ -1,0 +1,34 @@
+import pathlib
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import os
+import PIL
+from tensorflow.keras import layers
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+
+
+
+
+
+class MelanomaDetectionModel:
+    ROOT_PATH="model/"
+    MODEL_NAME="model.h5"
+    
+    def __init__(self) -> None:
+        print("oppo "+os.getcwd())
+        self.model = load_model(MelanomaDetectionModel.ROOT_PATH + MelanomaDetectionModel.MODEL_NAME, compile=False)
+
+    def getClassOfCancer(self, uploadedImage):
+        class_names=['mel', 'bkl', 'bcc', 'akiec', 'vasc', 'df']
+        tf_image = image.img_to_array(uploadedImage)
+
+        # Add an extra dimension to the array to make it a tensor with shape (1, *image_shape)
+        image_tensor = tf_image[tf.newaxis,...]
+        scaled_image=tf.keras.layers.Rescaling(scale=1./255)(image_tensor)
+        prob=self.model.predict(scaled_image)
+        return prob
+
+        # Print the class label
