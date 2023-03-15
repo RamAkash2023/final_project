@@ -114,7 +114,12 @@ function predictImage(image) {
         resp.json().then(data => {
           displayResult(data);
         });
+        else{
+          alert("Error!!! Upload suitable image for prediction")
+         clearImage();
+        }
     })
+
     .catch(err => {
       console.log("An error occured", err.message);
       window.alert("Oops! Something went wrong.");
